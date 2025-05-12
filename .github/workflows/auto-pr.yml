@@ -1,0 +1,22 @@
+# .github/workflows/auto-pr.yml
+name: Open PR on new branch push
+
+on:
+  push:
+    branches-ignore: [main]   # main への push では実行しない
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }} # Use the PAT stored in secrets
+        uses: diillson/auto-pull-request@v1
+        with:
+          destination_branch: main
+          pr_title: "${{ github.ref_name }} → main"
+          pr_body: "自動生成 PR です。"
+          pr_reviewer: "Copilot"
